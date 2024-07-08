@@ -31,6 +31,14 @@ if(NOT DEFINED KOS_CC_BASE)
     endif()
 endif()
 
+if(NOT DEFINED KOS_CC_PREFIX)
+    if(NOT DEFINED ENV{KOS_CC_PREFIX})
+        message(FATAL_ERROR "KOS_CC_PREFIX environment variable not found!")
+    else()
+        set(KOS_CC_PREFIX $ENV{KOS_CC_PREFIX})
+    endif()
+endif()
+
 ### Helper Function for Bin2Object ###
 function(kos_bin2o inFile symbol)
     # outFile is optional and defaults to the symbol name in the build directory
@@ -67,6 +75,7 @@ function(kos_add_romdisk target romdiskPath)
     file(REAL_PATH "${romdiskPath}" romdiskPath)
 
     set(c_tmp   ${CMAKE_CURRENT_BINARY_DIR}/${romdiskName}_tmp.c)
+    set(o_tmp   ${CMAKE_CURRENT_BINARY_DIR}/${romdiskName}_tmp.o)
     set(img     ${CMAKE_CURRENT_BINARY_DIR}/${romdiskName}.img)
 
     # Variable holding all files in the romdiskPath folder
@@ -86,12 +95,13 @@ function(kos_add_romdisk target romdiskPath)
     )
 
     add_custom_command(
-        OUTPUT ${c_tmp}
+        OUTPUT ${o_tmp}
         DEPENDS ${img}
         COMMAND ${KOS_BASE}/utils/bin2c/bin2c ${img} ${c_tmp} romdisk
+        COMMAND ${KOS_CC_BASE}/bin/${KOS_CC_PREFIX}-gcc -o ${o_tmp} -c ${c_tmp}
     )
 
     # Append romdisk object to target
-    target_sources(${target} PRIVATE ${c_tmp})
+    target_sources(${target} PRIVATE ${o_tmp})
     target_link_options(${target} PRIVATE -Wl,--whole-archive -lromdiskbase -Wl,--no-whole-archive)
 endfunction()
