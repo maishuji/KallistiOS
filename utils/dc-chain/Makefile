@@ -21,10 +21,14 @@ else
     $(error No configuration file found at $(config_file) or Makefile.default.cfg)
   endif
 endif
-
+$(info +++ Using toolchain profile from $(toolchain_profile))
 # Toolchain profiles
 include scripts/profile-defaults.mk
 ifneq ("$(wildcard profiles/profile.$(toolchain_profile).mk)","")
+  $(info +++ (1) Using toolchain profile from profiles/profile.$(toolchain_profile).mk)
+  include profiles/profile.$(toolchain_profile).mk
+ifneq ($(wildcard profiles/profile.$(toolchain_profile).mk),)
+  $(info +++ (2) Using toolchain profile from profiles/profile.$(toolchain_profile).mk)
   include profiles/profile.$(toolchain_profile).mk
 else
   $(error No toolchain profile file found at profiles/profile.$(toolchain_profile).mk)
