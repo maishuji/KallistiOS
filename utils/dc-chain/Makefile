@@ -28,7 +28,7 @@ $(info toolchain_profile is "$(toolchain_profile)")
 
 # Toolchain profiles
 include scripts/profile-defaults.mk
-ifneq ($(wildcard profiles/profile.$(toolchain_profile).mk),)
+ifneq ("$(wildcard profiles/profile.$(toolchain_profile).mk)","")
 #ifneq ("$(wildcard profiles/profile.$(toolchain_profile).mk)","")
   include profiles/profile.$(toolchain_profile).mk
 else
