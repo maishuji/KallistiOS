@@ -24,7 +24,8 @@ endif
 
 # Toolchain profiles
 include scripts/profile-defaults.mk
-ifneq ("$(wildcard profiles/profile.$(toolchain_profile).mk)","")
+ifneq ($(wildcard profiles/profile.$(toolchain_profile).mk),)
+#ifneq ("$(wildcard profiles/profile.$(toolchain_profile).mk)","")
   include profiles/profile.$(toolchain_profile).mk
 else
   $(error No toolchain profile file found at profiles/profile.$(toolchain_profile).mk)
