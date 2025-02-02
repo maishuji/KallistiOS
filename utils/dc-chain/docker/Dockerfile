@@ -40,8 +40,9 @@ ARG makejobs=2
 RUN echo "MY_VAR is: $dc_chain"
 
 RUN mkdir -p /opt/toolchains/dc \
-	&& git clone https://git.code.sf.net/p/cadcdev/kallistios /opt/toolchains/dc/kos || git clone https://github.com/KallistiOS/KallistiOS.git /opt/toolchains/dc/kos \
+	&& git clone https://github.com/maishuji/KallistiOS.git /opt/toolchains/dc/kos \
 	&& cd /opt/toolchains/dc/kos/utils/dc-chain \
+        && git checkout fix/docker-dc-chain-profile \
 	&& make build toolchain_profile=${dc_chain} makejobs=${makejobs} \
 	&& rm -rf /opt/toolchains/dc/kos
 

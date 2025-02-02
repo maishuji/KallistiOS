@@ -22,6 +22,10 @@ else
   endif
 endif
 
+$(info Checking for: profiles/profile.$(toolchain_profile).mk)
+$(info wildcard result: $(wildcard profiles/profile.$(toolchain_profile).mk))
+$(info toolchain_profile is "$(toolchain_profile)")
+
 # Toolchain profiles
 include scripts/profile-defaults.mk
 ifneq ($(wildcard profiles/profile.$(toolchain_profile).mk),)
